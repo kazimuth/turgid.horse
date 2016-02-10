@@ -1,0 +1,84 @@
+<!doctype html>
+
+<!-- fork me on github?
+     github.com/kazimuth/turgid.horse -->
+
+<html>
+    <head>
+        <title>why</title>
+        <meta name="turgid.horse"/>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                border-collapse: collapse;
+                overflow: hidden;
+            }
+        </style>
+        <link rel="apple-touch-icon" href="horse-icon.jpg">
+        <link rel="icon" href="horse-icon.jpg">
+    </head>
+    <body>
+        <canvas id='horseCanvas'></canvas>
+        <audio src='horse.mp3' autoplay loop></audio>
+        <script>
+            var horseImage = new Image();
+            horseImage.src = 'horse.jpg';
+
+            var canvas = document.getElementById('horseCanvas');
+            var ctx = canvas.getContext('2d');
+
+            var startTime;
+
+            var zoomRate = .00001; // scale factor / millisecond
+            var hueRate = -.1; // degrees / millisecond
+
+            var horseAspect = 1750.0 / 1436.0;
+            var targetXRatio = 1106.0 / 1750.0;
+            var targetYRatio = 950.0 / 1436.0;
+
+            function drawHorse() {
+                var t = Date.now() - startTime;
+                var zoom = 1 + t * zoomRate;
+                var hueRotation = t * hueRate;
+
+                var targetX = canvas.width * targetXRatio;
+                var targetY = canvas.height * targetYRatio;
+
+                var horseWidth = canvas.width * zoom;
+                var horseHeight = horseWidth / horseAspect;
+
+                var cornerX = targetX - targetXRatio * horseWidth;
+                var cornerY = targetY - targetYRatio * horseHeight;
+
+                ctx.drawImage(horseImage, cornerX, cornerY, horseWidth, horseHeight);
+
+                window.requestAnimationFrame(drawHorse);
+            };
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+
+            window.addEventListener('resize', resizeCanvas);
+
+            horseImage.addEventListener('load', function() {
+                resizeCanvas();
+                startTime = Date.now();
+                drawHorse();
+            });
+        </script>
+    </body>
+</html>
+
+<!--
+ ______________________________ 
+( what am i doing with my life )
+ ------------------------------ 
+        o   ^__^
+         o  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+-->
