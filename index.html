@@ -8,8 +8,8 @@
         o   ^__^
          o  (oo)\_______
             (__)\       )\/\
-                ||----w |
-                ||     ||
+                ||----o||
+                ||   / ||
 -->
 
 <html>
@@ -22,6 +22,8 @@
                 padding: 0;
                 border-collapse: collapse;
                 overflow: hidden;
+                background-repeat: repeat;
+                background-image: url(horse-background.jpg);
             }
         </style>
         <link rel="apple-touch-icon" href="horse-icon.jpg">
@@ -29,8 +31,14 @@
     </head>
     <body>
         <canvas id='horseCanvas'></canvas>
+
+        <!-- Audio from Marvin Gaye's "Let's get it on",
+             used under fair use -->
+
         <audio src='horse.mp3' autoplay loop></audio>
         <script>
+            // Image from:
+            // https://commons.wikimedia.org/wiki/File:Me%C4%91imurski_konj_(vranac)_na_sajmu_MESAP_2015.jpg
             var horseImage = new Image();
             horseImage.src = 'horse.jpg';
 
