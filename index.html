@@ -30,20 +30,23 @@
         <link rel="icon" href="horse-icon.jpg">
     </head>
     <body>
-        <canvas id='horseCanvas'></canvas>
+        <canvas id="horseCanvas"></canvas>
 
         <!-- Audio from Marvin Gaye's "Let's get it on",
              used under fair use -->
 
-        <audio src='horse.mp3' autoplay loop></audio>
         <script>
             // Image from:
             // https://commons.wikimedia.org/wiki/File:Me%C4%91imurski_konj_(vranac)_na_sajmu_MESAP_2015.jpg
             var horseImage = new Image();
-            horseImage.src = 'horse.jpg';
+            horseImage.src = "horse.jpg";
 
-            var canvas = document.getElementById('horseCanvas');
-            var ctx = canvas.getContext('2d');
+            var horseAudio = new Audio("horse.mp3");
+            horseAudio.autoplay = true;
+            horseAudio.loop = true;
+
+            var canvas = document.getElementById("horseCanvas");
+            var ctx = canvas.getContext("2d");
 
             var startTime;
 
@@ -78,9 +81,9 @@
                 canvas.height = window.innerHeight;
             };
 
-            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener("resize", resizeCanvas);
 
-            horseImage.addEventListener('load', function() {
+            horseImage.addEventListener("load", function() {
                 resizeCanvas();
                 startTime = Date.now();
                 drawHorse();
