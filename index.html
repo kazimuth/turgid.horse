@@ -99,29 +99,39 @@ function resizeCanvas() {
 
 window.addEventListener("resize", resizeCanvas);
 
-horseImage.addEventListener("load", function() {
-    console.log("image loaded");
-    horseAudio.addEventListener("canplay", function() {
-        console.log("audio loaded");
-        if (horseAudio.paused) {
-            // mobile browser
-            var overlay = document.getElementById("overlay");
-            overlay.className = "";
-            overlay.onclick = function() {
-                overlay.className = "imaginary";
-                horseAudio.play();
-                resizeCanvas();
-                startTime = Date.now();
-                drawHorse();
-                console.log("This is definitely your fault.");
-            };
-        } else {
+var image = false;
+var audio = false;
+
+function startup() {
+    if (!image || !audio) return;
+
+    if (horseAudio.paused) {
+        // mobile browser
+        var overlay = document.getElementById("overlay");
+        overlay.className = "";
+        overlay.onclick = function() {
+            overlay.className = "imaginary";
+            horseAudio.play();
             resizeCanvas();
             startTime = Date.now();
             drawHorse();
-            console.log("This is your fault.");
-        }
-    });
+            console.log("This is definitely your fault.");
+        };
+    } else {
+        resizeCanvas();
+        startTime = Date.now();
+        drawHorse();
+        console.log("This is your fault.");
+    }
+}
+
+horseImage.addEventListener("load", function() {
+    image = true;
+    startup();
+});
+horseAudio.addEventListener("canplay", function() {
+    audio = true;
+    startup();
 });
         </script>
     </body>
