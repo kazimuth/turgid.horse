@@ -1,22 +1,9 @@
 <!doctype html>
-
-<!--
- _______________________ 
-( fork me on github?    )
-( kazimuth/turgid.horse )
- ----------------------- 
-        o   ^__^
-         o  (oo)\_______
-            (__)\       )\/\
-                ||----o||
-                ||   / ||
--->
-
 <html>
     <head>
         <title>why</title>
-        <meta name="turgid.horse"/>
-        <style>
+        <meta name="turgid.horse"></meta>
+        <style type="text/css">
             body {
                 margin: 0;
                 padding: 0;
@@ -25,25 +12,30 @@
                 background-repeat: repeat;
                 background-image: url(horse-background.jpg);
             }
+            #horseAudio {
+                display: none;
+            }
         </style>
         <link rel="apple-touch-icon" href="horse-icon.jpg">
         <link rel="icon" href="horse-icon.jpg">
     </head>
     <body>
+        <!-- Audio from Marvin Gaye's "Let's get it on", used under fair use -->
+        <audio id="horseAudio" autoplay loop>
+            <source src="horse.webm" type="audio/webm"></source>
+            <source src="horse.ogg" type="audio/ogg"></source>
+            <source src="horse.mp3" type="audio/mpeg"></source>
+        </audio>
+
         <canvas id="horseCanvas"></canvas>
 
-        <!-- Audio from Marvin Gaye's "Let's get it on",
-             used under fair use -->
-
         <script>
+            console.log("This is your fault.");
+
             // Image from:
             // https://commons.wikimedia.org/wiki/File:Me%C4%91imurski_konj_(vranac)_na_sajmu_MESAP_2015.jpg
             var horseImage = new Image();
             horseImage.src = "horse.jpg";
-
-            var horseAudio = new Audio("horse.mp3");
-            horseAudio.autoplay = true;
-            horseAudio.loop = true;
 
             var canvas = document.getElementById("horseCanvas");
             var ctx = canvas.getContext("2d");
@@ -53,7 +45,7 @@
             var zoomRate = .00001; // scale factor / millisecond
             var hueRate = -.1; // degrees / millisecond
 
-            var horseAspect = 1750.0 / 1436.0;
+            var horseAspect = 1200.0 / 985.0;
             var targetXRatio = 1106.0 / 1750.0;
             var targetYRatio = 950.0 / 1436.0;
 
