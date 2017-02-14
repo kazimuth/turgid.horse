@@ -12,8 +12,30 @@
                 background-repeat: repeat;
                 background-image: url(horse-background.jpg);
             }
-            #horseAudio {
+            .imaginary {
                 display: none;
+            }
+            #overlay {
+                background-color: #333;
+                opacity: 0.8;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                z-index: 100;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                background-position: center;
+            }
+            #child {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                height: 50%;
+                width: 50%;
+                margin: -5% 0 0 -5%;
+                color: white;
+                font-size: 100px;
             }
         </style>
         <link rel="apple-touch-icon" href="horse-icon.jpg">
@@ -21,7 +43,7 @@
     </head>
     <body>
         <!-- Audio from Marvin Gaye's "Let's get it on", used under fair use -->
-        <audio id="horseAudio" autoplay loop>
+        <audio id="horseAudio" autoplay loop class="imaginary">
             <source src="horse.mp3" type="audio/mpeg"></source>
             <source src="horse.webm" type="audio/webm"></source>
             <source src="horse.ogg" type="audio/ogg"></source>
@@ -29,57 +51,75 @@
 
         <canvas id="horseCanvas"></canvas>
 
+        <div id="overlay"><div id="child">&#9658;</div></div>
+
         <script>
-            console.log("This is your fault.");
 
-            // Image from:
-            // https://commons.wikimedia.org/wiki/File:Me%C4%91imurski_konj_(vranac)_na_sajmu_MESAP_2015.jpg
-            var horseImage = new Image();
-            horseImage.src = "horse.jpg";
+console.log("This is your fault.");
 
-            var canvas = document.getElementById("horseCanvas");
-            var ctx = canvas.getContext("2d");
+// Image from:
+// https://commons.wikimedia.org/wiki/File:Me%C4%91imurski_konj_(vranac)_na_sajmu_MESAP_2015.jpg
+var horseImage = new Image();
+horseImage.src = "horse.jpg";
 
-            var startTime;
+var canvas = document.getElementById("horseCanvas");
+var audio = document.getElementById("horseAudio");
+var ctx = canvas.getContext("2d");
 
-            var zoomRate = .00001; // scale factor / millisecond
-            var hueRate = -.1; // degrees / millisecond
+var startTime;
 
-            var horseAspect = 1200.0 / 985.0;
-            var targetXRatio = 1106.0 / 1750.0;
-            var targetYRatio = 950.0 / 1436.0;
+var zoomRate = .00001; // scale factor / millisecond
+var hueRate = -.1; // degrees / millisecond
 
-            function drawHorse() {
-                var t = Date.now() - startTime;
-                var zoom = 1 + t * zoomRate;
-                var hueRotation = t * hueRate;
+var horseAspect = 1200.0 / 985.0;
+var targetXRatio = 1106.0 / 1750.0;
+var targetYRatio = 950.0 / 1436.0;
 
-                var targetX = canvas.width * targetXRatio;
-                var targetY = canvas.height * targetYRatio;
+function drawHorse() {
+    var t = Date.now() - startTime;
+    var zoom = 1 + t * zoomRate;
+    var hueRotation = t * hueRate;
 
-                var horseWidth = canvas.width * zoom;
-                var horseHeight = horseWidth / horseAspect;
+    var targetX = canvas.width * targetXRatio;
+    var targetY = canvas.height * targetYRatio;
 
-                var cornerX = targetX - targetXRatio * horseWidth;
-                var cornerY = targetY - targetYRatio * horseHeight;
+    var horseWidth = canvas.width * zoom;
+    var horseHeight = horseWidth / horseAspect;
 
-                ctx.drawImage(horseImage, cornerX, cornerY, horseWidth, horseHeight);
+    var cornerX = targetX - targetXRatio * horseWidth;
+    var cornerY = targetY - targetYRatio * horseHeight;
 
-                window.requestAnimationFrame(drawHorse);
-            };
+    ctx.drawImage(horseImage, cornerX, cornerY, horseWidth, horseHeight);
 
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            };
+    window.requestAnimationFrame(drawHorse);
+};
 
-            window.addEventListener("resize", resizeCanvas);
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+};
 
-            horseImage.addEventListener("load", function() {
+window.addEventListener("resize", resizeCanvas);
+
+horseImage.addEventListener("load", function() {
+    horseAudio.addEventListener("canplay", function() {
+        if (horseAudio.paused) {
+            // mobile browser
+            var overlay = document.getElementById("overlay");
+            overlay.className = "";
+            overlay.onclick = function() {
+                overlay.className = "imaginary";
+                horseAudio.play();
                 resizeCanvas();
                 startTime = Date.now();
                 drawHorse();
-            });
+            };
+        }
+        resizeCanvas();
+        startTime = Date.now();
+        drawHorse();
+    });
+});
         </script>
     </body>
 </html>
