@@ -100,7 +100,9 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 
 horseImage.addEventListener("load", function() {
+    console.log("image loaded");
     horseAudio.addEventListener("canplay", function() {
+        console.log("audio loaded");
         if (horseAudio.paused) {
             // mobile browser
             var overlay = document.getElementById("overlay");
